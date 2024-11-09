@@ -1,0 +1,106 @@
+@startuml Test
+
+class CodeAnalyzer {
+    - rulesHandler: RulesHandler
+    - staticCodeAnalyzer: StaticCodeAnalyzer
+    - coverageAnalyzer: CoverageAnalyzer
+    - astTree: BaseAST
+    + beginAnalysis(): void
+    - getRules(): Rules
+    - getAST(): ParseTree
+}
+
+interface BaseAST {
+    + parseCode(String path)
+    + visitMethod(MethodNode node)
+    + visitClass(ClassNode node)
+    + visitVariable(VariableNode node)
+}
+
+class AntlrAST {
+    + parseCode(String path)
+    + visitMethod(MethodNode node)
+    + visitClass(ClassNode node)
+    + visitVariable(VariableNode node)
+}
+
+class JavaParserAST {
+    + parseCode(String path)
+    + visitMethod(MethodNode node)
+    + visitClass(ClassNode node)
+    + visitVariable(VariableNode node)
+}
+
+class StaticCodeAnalyzer {
+    - rules: Rules
+    - analyzers: List<Analyzer>
+    + analyzeCode(): List<Issue>
+    + addAnalyzer(analyzer: Analyzer): void
+    + removeAnalyzer(analyzer: Analyzer): void
+}
+
+interface Analyzer {
+    + analyze(): List<Issue>
+}
+
+abstract class BaseAnalyzer {
+    - codeIssues: List<Issues>
+    - astTree : BaseAST
+}
+
+class CodeSmellsAnalyzer {
+    - codeSmells: CodeSmells
+    + analyze(): List<Issue>
+}
+
+class CodeQualityAnalyzer {
+    - codeQuality: CodeQuality
+    + analyze(): List<Issue>
+}
+
+class BestPracticesAnalyzer {
+    - bestPractices: BestPractices
+    + analyze(): List<Issue>
+}
+
+class CodeComplexityAnalyzer {
+    - codeComplexity: CodeComplexity
+    + analyze(): List<Issue>
+}
+
+class CodingStandardsAnalyzer {
+    - codingStandards: CodingStandards
+    + analyze(): List<Issue>
+}
+
+class Issue {
+    - line: int
+    - column: int
+    - message: String
+    + getMessage(): String
+    + getLine(): int
+    + getColumn(): int
+}
+
+StaticCodeAnalyzer o-- Analyzer
+CodeAnalyzer --> StaticCodeAnalyzer
+CodeAnalyzer --> BaseAST
+CodeSmellsAnalyzer o-- Issue
+CodeQualityAnalyzer o-- Issue
+BestPracticesAnalyzer o-- Issue
+CodeComplexityAnalyzer o-- Issue
+CodingStandardsAnalyzer o-- Issue
+CodeSmellsAnalyzer <|-- BaseAnalyzer
+CodeQualityAnalyzer <|-- BaseAnalyzer
+BestPracticesAnalyzer <|-- BaseAnalyzer
+CodeComplexityAnalyzer <|-- BaseAnalyzer
+CodingStandardsAnalyzer <|-- BaseAnalyzer
+
+BaseAnalyzer <|-- Analyzer
+
+BaseAnalyzer o-- BaseAST
+
+AntlrAST ..|> BaseAST
+JavaParserAST ..|> BaseAST
+
+@enduml

@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS ToDo (
+    id SERIAL PRIMARY KEY,
+    Title VARCHAR(50) NOT NULL,
+    Description VARCHAR(50) NOT NULL,
+    IsCompleted BOOLEAN NOT NULL
+);

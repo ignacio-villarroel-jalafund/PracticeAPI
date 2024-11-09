@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: finalapi
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: finalapi
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+
+
+volumes:
+  postgres_db:

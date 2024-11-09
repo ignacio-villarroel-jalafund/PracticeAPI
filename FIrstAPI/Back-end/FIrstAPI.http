@@ -1,0 +1,6 @@
+@FIrstAPI_HostAddress = http://localhost:5113
+
+GET {{FIrstAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
